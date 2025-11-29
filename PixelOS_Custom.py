@@ -34,11 +34,11 @@ script_path = os.path.join(pqu_dir, "PixelOS_Custom.py")
 
 ziel_datei = pqu_dir+"\PixelOS_Custom.py"
 
-distro = 
+distro =
 
 BETA_MODE = False
 OPEN_BETA_MODE = True
-VERSION = "CUSTOM_1.2"
+VERSION = "CUSTOM_1.1"
 
 if OPEN_BETA_MODE:
     SERVER_VERSION_URL = "http://peach.fps.ms:11231/version/version_custom_beta.php"
@@ -237,6 +237,9 @@ def execute_command_file(command_name, args=None):
     return False
 
 def terminal_open():
+            if os.path.exists(PASSWORD_FILE):
+                with open(PASSWORD_FILE, "r", encoding="utf-8") as file:
+                    password = file.read().strip()
             if os.path.exists(BENUTZERNAME_FILE):
                 with open(BENUTZERNAME_FILE, "r", encoding="utf-8") as file:
                     benutzername = file.read().strip()
