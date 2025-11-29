@@ -58,7 +58,7 @@ def terminal_open():
                     if platform.system() == "Windows":
                         subprocess.run(["powershell.exe"])
                         print("\033[H\033[J", end="")
-                        print("-------- PixelOS Terminal --------")
+                        print("-------- PixelOS KERNEL --------")
                     else:
                         print("Error performing command: Dieser Befehl ist nur unter Windows verfügbar.") 
                 elif ter_os == "su":
@@ -74,3 +74,4 @@ def terminal_open():
                     print("Unknown command.")
 
 terminal_open()
+
