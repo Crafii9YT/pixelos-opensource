@@ -1,5 +1,5 @@
 # Before you edit this code please note I coded this not very well.
-# I know I coded shit. I warned you.
+# I know I coded sh#t. I warned you.
 # And please dont copy the code. You can make your own PixelOS from this but say at least its based on PixelOS.
 # Please Note that some of the code is German.
 
@@ -34,10 +34,11 @@ script_path = os.path.join(pqu_dir, "PixelOS_Custom.py")
 
 ziel_datei = pqu_dir+"\PixelOS_Custom.py"
 
+distro = 
 
 BETA_MODE = False
 OPEN_BETA_MODE = True
-VERSION = "CUSTOM_1.1"
+VERSION = "CUSTOM_1.2"
 
 if OPEN_BETA_MODE:
     SERVER_VERSION_URL = "http://peach.fps.ms:11231/version/version_custom_beta.php"
@@ -235,6 +236,150 @@ def execute_command_file(command_name, args=None):
                 return True
     return False
 
+def terminal_open():
+            if os.path.exists(BENUTZERNAME_FILE):
+                with open(BENUTZERNAME_FILE, "r", encoding="utf-8") as file:
+                    benutzername = file.read().strip()
+            else:
+                benutzername = ""
+            ter_pref = benutzername + "@pixelos > "
+            print("\033[H\033[J", end="")
+            print("-------- PixelOS Terminal --------")
+            root = False
+            while True:
+                ter_os = input(ter_pref)
+                if ter_os == "color":
+                    set_terminal_color()
+                elif ter_os == "createdir":
+                    if root:
+                        directoryzwei = "Systemdateien"
+                        if not os.path.exists(directoryzwei):
+                            os.makedirs(directoryzwei)
+                        dir_input = input()
+                        test = os.path.join(directoryzwei, dir_input)
+                        if not os.path.exists(test):
+                            os.makedirs(test)
+                    else:
+                        print("You need root for this Command")
+                elif ter_os == "clear":
+                    print("\033[H\033[J", end="")
+                    print("-------- PixelOS Terminal --------")
+                elif ter_os == "username":
+                    if root:
+                        benutzername = input()
+                        with open(BENUTZERNAME_FILE, "w", encoding="utf-8") as file:
+                            file.write(benutzername)
+                    else:
+                        print("You need root for this Command")
+                elif ter_os == "password":
+                    if root:
+                        password = input()
+                        with open(PASSWORD_FILE, "w", encoding="utf-8") as file:
+                            file.write(password)
+                    else:
+                        print("You need root for this Command")
+                elif ter_os == "checkupdate":
+                    update_available, server_version = check_for_update(VERSION)
+                    if update_available:
+                        print(f"⚠ Update verfügbar! (Server Version: {server_version}, Deine Version: {VERSION})")
+                    else:
+                        print("✔ PixelOS ist auf dem neuesten Stand.")
+                elif ter_os == "help":
+                    print("Eingebaute Befehle:")
+                    print("color - Terminalfarbe ändern")
+                    print("createdir - Erstellt die notwendigen Ordner")
+                    print("username - Ändert/setzt den Benutzernamen")
+                    print("clear - Cleart das Terminal")
+                    print("checkupdate - Überprüft auf verfügbare Updates")
+                    print("password - Aendert das Passwort")
+                    print("su - Wechselt zu root")
+                    print("buildpios - Buildet dein eigenes PixelOS")
+                    print("downloadpios - Läd den Quellcode herunter")
+                    print("distro - Zeigt dir eine Zeile Code für dein distro")
+                    print("exit - Beendet das Terminal")
+                elif ter_os == "repair":
+                    directoryzwei = "Systemdateien"
+                    if not os.path.exists(directoryzwei):
+                        os.makedirs(directoryzwei)
+
+                    directory = os.path.join(directoryzwei, "Textdokumente")
+                    if not os.path.exists(directory):
+                        os.makedirs(directory)
+
+                    directorydrei = os.path.join(directoryzwei, "Add-Ons")
+                    if not os.path.exists(directorydrei):
+                        os.makedirs(directorydrei)
+
+                    directoryvier = os.path.join(directoryzwei, "Setup")
+                    if not os.path.exists(directoryvier):
+                        os.makedirs(directoryvier)
+
+                    app_installer_dir = os.path.join(directoryzwei, "App Installer Files")
+                    if not os.path.exists(app_installer_dir):
+                        os.makedirs(app_installer_dir)
+
+                    keys_dir = os.path.join(directoryzwei, "Keys")
+                    if not os.path.exists(keys_dir):
+                        os.makedirs(keys_dir)
+
+                    command_dir = os.path.join(directoryzwei, "Commands")
+                    if not os.path.exists(command_dir):
+                        os.makedirs(command_dir)
+                    benutzername = "root"
+                    with open(BENUTZERNAME_FILE, "w", encoding="utf-8") as file:
+                        file.write(benutzername)
+                elif ter_os == "pixelfetch":
+                    print("PixelOS")
+                    print("Version:", VERSION)
+                    print("Username:", benutzername)
+                elif ter_os == "win":
+                    if platform.system() == "Windows":
+                        subprocess.run(["powershell.exe"])
+                        print("\033[H\033[J", end="")
+                        print("-------- PixelOS Terminal --------")
+                    else:
+                        print("Error performing command: Dieser Befehl ist nur unter Windows verfügbar.") 
+                elif ter_os == "su":
+                    passw = input("Please enter your Password: ")
+                    if passw == password:
+                        ter_pref = "root@pixelos > "
+                        root = True
+                    else:
+                        print("Wrong password")
+                elif ter_os == "buildpios":
+                    command = ["pyinstaller", "--onefile", script_path]
+                    try:
+                        subprocess.run(command, check=True)
+                        print("Build erfolgreich abgeschlossen!")
+                    except subprocess.CalledProcessError as e:
+                        print("Fehler beim Erstellen:", e)
+                elif ter_os == "downloadpios":
+                    try:
+                        urllib.request.urlretrieve(url, ziel_datei)
+                        print(f"Download abgeschlossen: {ziel_datei}")
+                    except Exception as e:
+                        print("Fehler beim Download:", e)
+                elif ter_os == "distro":
+                    distro = input()
+                    if distro == "minimal":
+                        print("Find the line 'distro =' in the code and name it 'distro = 1'")
+                    elif distro == "full":
+                        print("Find the line 'distro =' in the code and name it 'distro = 2'")
+
+                elif ter_os == "exit":
+                    if ter_pref == "root@pixelos > ":
+                        root = False
+                        ter_pref = benutzername + "@pixelos > "
+                    else:
+                        break
+                else:
+                    parts = ter_os.split()
+                    cmd = parts[0]
+                    args = parts[1:]
+                    handled = execute_command_file(cmd, args)
+                    if not handled:
+                        print("Unknown command.")
+
 
 if os.path.exists(BENUTZERNAME_FILE):
     with open(BENUTZERNAME_FILE, "r", encoding="utf-8") as file:
@@ -294,323 +439,198 @@ if not benutzername:
             if not handled:
                 print("Unknown command.")
 
-while True:
-    ter_pref = benutzername + "@pixelos > "
-    print("\033[H\033[J", end="")
-    print("-------- PixelOS --------")
-    print("Hallo " + benutzername)
-    print("Gebe eine Zahl von 1 bis 6 ein")
-    print("1 = Taschenrechner")
-    print("2 = Texteditor")
-    print("3 = Add-Ons")
-    print("4 = Terminal")
-    print("5 = Version")
-    print("6 = Mitwirkende")
-    print("7 = Beenden")
-    eing_eins = input("> ")
-    if eing_eins == "1":
-        print("Willkommen beim Taschenrechner. Willst du plus, minus, mal oder geteilt:")
-        print("1 = Plus")
-        print("2 = Minus")
-        print("3 = Mal")
-        print("4 = Geteilt")
-        eing_zwei = input()
-        print("Gebe deine erste Zahl ein")
-        eing_drei = int(input())
-        print("Jetzt die Zweite")
-        eing_vier = int(input())
-        if eing_zwei == "1":
-            print("Ergebnis:")
-            print(eing_drei + eing_vier)
-        elif eing_zwei == "2":
-            print("Ergebniss:")
-            print(eing_drei - eing_vier)
-        elif eing_zwei == "3":
-            print("Ergebniss:")
-            print(eing_drei * eing_vier)
-        elif eing_zwei == "4":
-            if eing_vier == "0":
-                print("Du kannst nicht durch 0 teilen!!!")
-            else:
-                print("Ergebniss:")
-                print(eing_drei / eing_vier)
-        else:
-            print("Bitte geb eine gueltige Zahl ein!!!")
-        input("Druecke enter um fortzufahren")
-    elif eing_eins == "2":
-        print("Texteditor Optionen:")
-        print("1 = Neue Datei erstellen")
-        print("2 = Datei oeffnen")
-        print("3 = Datei editieren")
-        print("4 = Beenden")
-        option = input()
-        if option == "1":
-            print("Geben Sie den Dateinamen ein:")
-            filename = input()
-            filepath = os.path.join(directory, filename)
-            print("Geben Sie den Text ein (beenden mit 'END'):")
-            lines = []
-            while True:
-                line = input()
-                if line == "END":
-                    break
-                lines.append(line)
-            with open(filepath, "w", encoding="utf-8") as file:
-                file.write("\n".join(lines))
-            print(f"Datei {filename} wurde erstellt.")
-        elif option == "2":
-            print("Geben Sie den Dateinamen ein:")
-            filename = input()
-            filepath = os.path.join(directory, filename)
-            if os.path.exists(filepath):
-                with open(filepath, "r", encoding="utf-8") as file:
-                    print(file.read())
-            else:
-                print("Datei nicht gefunden.")
-        elif option == "3":
-            print("Geben Sie den Dateinamen ein:")
-            filename = input()
-            filepath = os.path.join(directory, filename)
-            print("Geben Sie den Text ein (beenden mit 'END'):")
-            lines = []
-            while True:
-                line = input()
-                if line == "END":
-                    break
-                lines.append(line)
-            with open(filepath, "w", encoding="utf-8") as file:
-                file.write("\n".join(lines))
-            print(f"Datei {filename} wurde gespeichert.")
-        elif option == 4:
-            continue
-        else:
-            print("Ungueltige Option, bitte versuchen Sie es erneut.")
-        input("Druecke enter um fortzufahren")
-    elif eing_eins == "3":
-        print("Add-Ons Optionen:")
-        print("1 = Klassische Add-Ons (vom Server laden / starten)")
-        print("2 = App Installer (.pios Dateien installieren)")
-        addon_option = input()
-
-        if addon_option == "1":
-            print("1 = Add-On von Server auswaehlen und herunterladen")
-            print("2 = Vorhandene Add-Ons anzeigen und laden")
-            sub_option = input()
-
-            if sub_option == "1":
-                server_addons = list_server_addons()
-                py_addons = [a for a in server_addons if a.endswith(".py")]
-                if not py_addons:
-                    print("Keine Add-Ons gefunden.")
-                else:
-                    print("Add-Ons auf dem Server:")
-                    for i, addon in enumerate(py_addons):
-                        print(f"{i + 1} = {os.path.basename(addon)}")
-                    auswahl = int(input("Waehle ein Add-On: "))
-                    if 1 <= auswahl <= len(py_addons):
-                        addon_name = os.path.basename(py_addons[auswahl - 1])
-                        url = SERVER_ADDONS_URL + "/" + addon_name
-                        save_path = os.path.join(directorydrei, addon_name)
-                        urllib.request.urlretrieve(url, save_path)
-                        print(f"{addon_name} wurde gespeichert.")
-            elif sub_option == 2:
-                addons = [f for f in os.listdir(directorydrei) if f.endswith('.py')]
-                for i, addon in enumerate(addons):
-                    print(f"{i + 1} = {addon}")
-                auswahl = int(input("Waehle ein Add-On zum Laden: "))
-                if 1 <= auswahl <= len(addons):
-                    addon_path = os.path.join(directorydrei, addons[auswahl - 1])
-                    addon_module = load_addon(addon_path)
-                    if hasattr(addon_module, 'main'):
-                        addon_module.main()
-            else:
-                print("Ungueltige Auswahl.")
-            input("Druecke enter um fortzufahren")
-
-        elif addon_option == "2":
-            print("App Installer Optionen:")
-            print("1 = .pios Datei vom Server herunterladen und installieren")
-            print("2 = Lokale .pios Datei installieren")
-            sub_option = int(input())
-
-            if sub_option == 1:
-                server_addons = list_server_addons()
-                pios_files = [a for a in server_addons if a.endswith(".pios")]
-                if not pios_files:
-                    print("Keine .pios Dateien auf dem Server gefunden.")
-                else:
-                    print("Verfuegbare .pios Dateien:")
-                    for i, addon in enumerate(pios_files):
-                        print(f"{i + 1} = {os.path.basename(addon)}")
-                    auswahl = int(input("Waehle eine Datei: "))
-                    if 1 <= auswahl <= len(pios_files):
-                        addon_name = os.path.basename(pios_files[auswahl - 1])
-                        url = SERVER_ADDONS_URL + "/" + addon_name
-                        save_path = os.path.join(app_installer_dir, addon_name)
-                        urllib.request.urlretrieve(url, save_path)
-                        print(f"{addon_name} wurde heruntergeladen.")
-                        install_pios_file(save_path)
-            elif sub_option == 2:
-                files = [f for f in os.listdir(app_installer_dir) if f.endswith(".pios")]
-                if not files:
-                    print("Keine .pios Dateien gefunden.")
-                else:
-                    for i, f in enumerate(files):
-                        print(f"{i + 1} = {f}")
-                    auswahl = int(input("Waehle eine Datei: "))
-                    if 1 <= auswahl <= len(files):
-                        path = os.path.join(app_installer_dir, files[auswahl - 1])
-                        install_pios_file(path)
-            else:
-                print("Ungueltige Auswahl.")
-
-        else:
-            print("Ungueltige Option.")
-    elif eing_eins == "4":
+if distro == 2:
+    while True:
+        ter_pref = benutzername + "@pixelos > "
         print("\033[H\033[J", end="")
-        print("-------- PixelOS Terminal --------")
-        root = False
-        while True:
-            ter_os = input(ter_pref)
-            if ter_os == "color":
-                set_terminal_color()
-            elif ter_os == "createdir":
-                if root:
-                    directoryzwei = "Systemdateien"
-                    if not os.path.exists(directoryzwei):
-                        os.makedirs(directoryzwei)
-                    dir_input = input()
-                    test = os.path.join(directoryzwei, dir_input)
-                    if not os.path.exists(test):
-                        os.makedirs(test)
+        print("-------- PixelOS --------")
+        print("Hallo " + benutzername)
+        print("Gebe eine Zahl von 1 bis 6 ein")
+        print("1 = Taschenrechner")
+        print("2 = Texteditor")
+        print("3 = Add-Ons")
+        print("4 = Terminal")
+        print("5 = Version")
+        print("6 = Mitwirkende")
+        print("7 = Beenden")
+        eing_eins = input("> ")
+        if eing_eins == "1":
+            print("Willkommen beim Taschenrechner. Willst du plus, minus, mal oder geteilt:")
+            print("1 = Plus")
+            print("2 = Minus")
+            print("3 = Mal")
+            print("4 = Geteilt")
+            eing_zwei = input()
+            print("Gebe deine erste Zahl ein")
+            eing_drei = int(input())
+            print("Jetzt die Zweite")
+            eing_vier = int(input())
+            if eing_zwei == "1":
+                print("Ergebnis:")
+                print(eing_drei + eing_vier)
+            elif eing_zwei == "2":
+                print("Ergebniss:")
+                print(eing_drei - eing_vier)
+            elif eing_zwei == "3":
+                print("Ergebniss:")
+                print(eing_drei * eing_vier)
+            elif eing_zwei == "4":
+                if eing_vier == "0":
+                    print("Du kannst nicht durch 0 teilen!!!")
                 else:
-                    print("You need root for this Command")
-            elif ter_os == "clear":
-                print("\033[H\033[J", end="")
-                print("-------- PixelOS Terminal --------")
-            elif ter_os == "username":
-                if root:
-                    benutzername = input()
-                    with open(BENUTZERNAME_FILE, "w", encoding="utf-8") as file:
-                        file.write(benutzername)
-                else:
-                    print("You need root for this Command")
-            elif ter_os == "password":
-                if root:
-                    password = input()
-                    with open(PASSWORD_FILE, "w", encoding="utf-8") as file:
-                        file.write(password)
-                else:
-                    print("You need root for this Command")
-            elif ter_os == "checkupdate":
-                update_available, server_version = check_for_update(VERSION)
-                if update_available:
-                    print(f"⚠ Update verfügbar! (Server Version: {server_version}, Deine Version: {VERSION})")
-                else:
-                    print("✔ PixelOS ist auf dem neuesten Stand.")
-            elif ter_os == "help":
-                print("Eingebaute Befehle:")
-                print("color - Terminalfarbe ändern")
-                print("createdir - Erstellt die notwendigen Ordner")
-                print("username - Ändert/setzt den Benutzernamen")
-                print("clear - Cleart das Terminal")
-                print("checkupdate - Überprüft auf verfügbare Updates")
-                print("password - Aendert das Passwort")
-                print("su - Wechselt zu root")
-                print("buildpios - Buildet dein eigenes PixelOS")
-                print("downloadpios - Läd den Quellcode herunter")
-                print("exit - Beendet das Terminal")
-            elif ter_os == "repair":
-                directoryzwei = "Systemdateien"
-                if not os.path.exists(directoryzwei):
-                    os.makedirs(directoryzwei)
-
-                directory = os.path.join(directoryzwei, "Textdokumente")
-                if not os.path.exists(directory):
-                    os.makedirs(directory)
-
-                directorydrei = os.path.join(directoryzwei, "Add-Ons")
-                if not os.path.exists(directorydrei):
-                    os.makedirs(directorydrei)
-
-                directoryvier = os.path.join(directoryzwei, "Setup")
-                if not os.path.exists(directoryvier):
-                    os.makedirs(directoryvier)
-
-                app_installer_dir = os.path.join(directoryzwei, "App Installer Files")
-                if not os.path.exists(app_installer_dir):
-                    os.makedirs(app_installer_dir)
-
-                keys_dir = os.path.join(directoryzwei, "Keys")
-                if not os.path.exists(keys_dir):
-                    os.makedirs(keys_dir)
-
-                command_dir = os.path.join(directoryzwei, "Commands")
-                if not os.path.exists(command_dir):
-                    os.makedirs(command_dir)
-                benutzername = "root"
-                with open(BENUTZERNAME_FILE, "w", encoding="utf-8") as file:
-                    file.write(benutzername)
-            elif ter_os == "pixelfetch":
-                print("PixelOS")
-                print("Version:", VERSION)
-                print("Username:", benutzername)
-            elif ter_os == "win":
-                if platform.system() == "Windows":
-                    subprocess.run(["powershell.exe"])
-                    print("\033[H\033[J", end="")
-                    print("-------- PixelOS Terminal --------")
-                else:
-                    print("Error performing command: Dieser Befehl ist nur unter Windows verfügbar.") 
-            elif ter_os == "su":
-                passw = input("Please enter your Password: ")
-                if passw == password:
-                    ter_pref = "root@pixelos > "
-                    root = True
-                else:
-                    print("Wrong password")
-            elif ter_os == "buildpios":
-                command = ["pyinstaller", "--onefile", script_path]
-                try:
-                    subprocess.run(command, check=True)
-                    print("Build erfolgreich abgeschlossen!")
-                except subprocess.CalledProcessError as e:
-                    print("Fehler beim Erstellen:", e)
-            elif ter_os == "downloadpios":
-                try:
-                    urllib.request.urlretrieve(url, ziel_datei)
-                    print(f"Download abgeschlossen: {ziel_datei}")
-                except Exception as e:
-                    print("Fehler beim Download:", e)
-            elif ter_os == "exit":
-                if ter_pref == "root@pixelos > ":
-                    root = False
-                    ter_pref = benutzername + "@pixelos > "
-                else:
-                    break
+                    print("Ergebniss:")
+                    print(eing_drei / eing_vier)
             else:
-                parts = ter_os.split()
-                cmd = parts[0]
-                args = parts[1:]
-                handled = execute_command_file(cmd, args)
-                if not handled:
-                    print("Unknown command.")
-    elif eing_eins == "5":
-        print("PixelOS Version " + VERSION + " BETA")
-        print("Release Datum: 15.11.25")
-        print("Um PixelOS zu aktualisieren, benutze den Updater (PixelOS_Updater.exe)")
-        input("Druecke enter um fortzufahren")
-    elif eing_eins == "6":
-        print("Owner und Dev: Leonard1412")
-        print("Owner: Crafii9")
-        input("Druecke enter um fortzufahren")
-    elif eing_eins == "7":
-        wait = input("Druecke Enter um das Programm zu beenden")
-        break
-    elif eing_eins == "99":
-        print("Easter Egg :D")
-        input("Druecke enter um fortzufahren")
-    else:
-        print("Gebe eine gueltige Zahl ein!")
-        input("Druecke enter um fortzufahren")
+                print("Bitte geb eine gueltige Zahl ein!!!")
+            input("Druecke enter um fortzufahren")
+        elif eing_eins == "2":
+            print("Texteditor Optionen:")
+            print("1 = Neue Datei erstellen")
+            print("2 = Datei oeffnen")
+            print("3 = Datei editieren")
+            print("4 = Beenden")
+            option = input()
+            if option == "1":
+                print("Geben Sie den Dateinamen ein:")
+                filename = input()
+                filepath = os.path.join(directory, filename)
+                print("Geben Sie den Text ein (beenden mit 'END'):")
+                lines = []
+                while True:
+                    line = input()
+                    if line == "END":
+                        break
+                    lines.append(line)
+                with open(filepath, "w", encoding="utf-8") as file:
+                    file.write("\n".join(lines))
+                print(f"Datei {filename} wurde erstellt.")
+            elif option == "2":
+                print("Geben Sie den Dateinamen ein:")
+                filename = input()
+                filepath = os.path.join(directory, filename)
+                if os.path.exists(filepath):
+                    with open(filepath, "r", encoding="utf-8") as file:
+                        print(file.read())
+                else:
+                    print("Datei nicht gefunden.")
+            elif option == "3":
+                print("Geben Sie den Dateinamen ein:")
+                filename = input()
+                filepath = os.path.join(directory, filename)
+                print("Geben Sie den Text ein (beenden mit 'END'):")
+                lines = []
+                while True:
+                    line = input()
+                    if line == "END":
+                        break
+                    lines.append(line)
+                with open(filepath, "w", encoding="utf-8") as file:
+                    file.write("\n".join(lines))
+                print(f"Datei {filename} wurde gespeichert.")
+            elif option == 4:
+                continue
+            else:
+                print("Ungueltige Option, bitte versuchen Sie es erneut.")
+            input("Druecke enter um fortzufahren")
+        elif eing_eins == "3":
+            print("Add-Ons Optionen:")
+            print("1 = Klassische Add-Ons (vom Server laden / starten)")
+            print("2 = App Installer (.pios Dateien installieren)")
+            addon_option = input()
 
+            if addon_option == "1":
+                print("1 = Add-On von Server auswaehlen und herunterladen")
+                print("2 = Vorhandene Add-Ons anzeigen und laden")
+                sub_option = input()
+
+                if sub_option == "1":
+                    server_addons = list_server_addons()
+                    py_addons = [a for a in server_addons if a.endswith(".py")]
+                    if not py_addons:
+                        print("Keine Add-Ons gefunden.")
+                    else:
+                        print("Add-Ons auf dem Server:")
+                        for i, addon in enumerate(py_addons):
+                            print(f"{i + 1} = {os.path.basename(addon)}")
+                        auswahl = int(input("Waehle ein Add-On: "))
+                        if 1 <= auswahl <= len(py_addons):
+                            addon_name = os.path.basename(py_addons[auswahl - 1])
+                            url = SERVER_ADDONS_URL + "/" + addon_name
+                            save_path = os.path.join(directorydrei, addon_name)
+                            urllib.request.urlretrieve(url, save_path)
+                            print(f"{addon_name} wurde gespeichert.")
+                elif sub_option == 2:
+                    addons = [f for f in os.listdir(directorydrei) if f.endswith('.py')]
+                    for i, addon in enumerate(addons):
+                        print(f"{i + 1} = {addon}")
+                    auswahl = int(input("Waehle ein Add-On zum Laden: "))
+                    if 1 <= auswahl <= len(addons):
+                        addon_path = os.path.join(directorydrei, addons[auswahl - 1])
+                        addon_module = load_addon(addon_path)
+                        if hasattr(addon_module, 'main'):
+                            addon_module.main()
+                else:
+                    print("Ungueltige Auswahl.")
+                input("Druecke enter um fortzufahren")
+
+            elif addon_option == "2":
+                print("App Installer Optionen:")
+                print("1 = .pios Datei vom Server herunterladen und installieren")
+                print("2 = Lokale .pios Datei installieren")
+                sub_option = int(input())
+
+                if sub_option == 1:
+                    server_addons = list_server_addons()
+                    pios_files = [a for a in server_addons if a.endswith(".pios")]
+                    if not pios_files:
+                        print("Keine .pios Dateien auf dem Server gefunden.")
+                    else:
+                        print("Verfuegbare .pios Dateien:")
+                        for i, addon in enumerate(pios_files):
+                            print(f"{i + 1} = {os.path.basename(addon)}")
+                        auswahl = int(input("Waehle eine Datei: "))
+                        if 1 <= auswahl <= len(pios_files):
+                            addon_name = os.path.basename(pios_files[auswahl - 1])
+                            url = SERVER_ADDONS_URL + "/" + addon_name
+                            save_path = os.path.join(app_installer_dir, addon_name)
+                            urllib.request.urlretrieve(url, save_path)
+                            print(f"{addon_name} wurde heruntergeladen.")
+                            install_pios_file(save_path)
+                elif sub_option == 2:
+                    files = [f for f in os.listdir(app_installer_dir) if f.endswith(".pios")]
+                    if not files:
+                        print("Keine .pios Dateien gefunden.")
+                    else:
+                        for i, f in enumerate(files):
+                            print(f"{i + 1} = {f}")
+                        auswahl = int(input("Waehle eine Datei: "))
+                        if 1 <= auswahl <= len(files):
+                            path = os.path.join(app_installer_dir, files[auswahl - 1])
+                            install_pios_file(path)
+                else:
+                    print("Ungueltige Auswahl.")
+
+            else:
+                print("Ungueltige Option.")
+        elif eing_eins == "4":
+            terminal_open()
+        elif eing_eins == "5":
+            print("PixelOS Version " + VERSION + " BETA")
+            print("Release Datum: 15.11.25")
+            print("Um PixelOS zu aktualisieren, benutze den Updater (PixelOS_Updater.exe)")
+            input("Druecke enter um fortzufahren")
+        elif eing_eins == "6":
+            print("Owner und Kerneldev: Leonard1412")
+            print("Owner: Crafii9")
+            input("Druecke enter um fortzufahren")
+        elif eing_eins == "7":
+            wait = input("Druecke Enter um das Programm zu beenden")
+            break
+        elif eing_eins == "99":
+            print("Easter Egg :D")
+            input("Druecke enter um fortzufahren")
+        else:
+            print("Gebe eine gueltige Zahl ein!")
+            input("Druecke enter um fortzufahren")
+elif distro == 1:
+    terminal_open()
