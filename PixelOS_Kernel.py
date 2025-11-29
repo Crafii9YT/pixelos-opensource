@@ -35,7 +35,7 @@ def terminal_open():
                         print("You need root for this Command")
                 elif ter_os == "clear":
                     print("\033[H\033[J", end="")
-                    print("-------- PixelOS Terminal --------")
+                    print("-------- PixelOS KERNEL --------")
                 elif ter_os == "username":
                     print("Only availabe in an commpatible Distro")
                 elif ter_os == "password":
@@ -74,4 +74,5 @@ def terminal_open():
                     print("Unknown command.")
 
 terminal_open()
+
 
