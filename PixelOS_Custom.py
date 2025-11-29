@@ -1,5 +1,5 @@
 # Before you edit this code please note I coded this not very well.
-# I know I coded sh#t. I warned you.
+# I know I coded shit. I warned you.
 # And please dont copy the code. You can make your own PixelOS from this but say at least its based on PixelOS.
 # Please Note that some of the code is German.
 
@@ -314,22 +314,22 @@ while True:
         print("2 = Minus")
         print("3 = Mal")
         print("4 = Geteilt")
-        eing_zwei = int(input())
+        eing_zwei = input()
         print("Gebe deine erste Zahl ein")
         eing_drei = int(input())
         print("Jetzt die Zweite")
         eing_vier = int(input())
-        if eing_zwei == 1:
+        if eing_zwei == "1":
             print("Ergebnis:")
             print(eing_drei + eing_vier)
-        elif eing_zwei == 2:
+        elif eing_zwei == "2":
             print("Ergebniss:")
             print(eing_drei - eing_vier)
-        elif eing_zwei == 3:
+        elif eing_zwei == "3":
             print("Ergebniss:")
             print(eing_drei * eing_vier)
-        elif eing_zwei == 4:
-            if eing_vier == 0:
+        elif eing_zwei == "4":
+            if eing_vier == "0":
                 print("Du kannst nicht durch 0 teilen!!!")
             else:
                 print("Ergebniss:")
@@ -343,8 +343,8 @@ while True:
         print("2 = Datei oeffnen")
         print("3 = Datei editieren")
         print("4 = Beenden")
-        option = int(input())
-        if option == 1:
+        option = input()
+        if option == "1":
             print("Geben Sie den Dateinamen ein:")
             filename = input()
             filepath = os.path.join(directory, filename)
@@ -358,7 +358,7 @@ while True:
             with open(filepath, "w", encoding="utf-8") as file:
                 file.write("\n".join(lines))
             print(f"Datei {filename} wurde erstellt.")
-        elif option == 2:
+        elif option == "2":
             print("Geben Sie den Dateinamen ein:")
             filename = input()
             filepath = os.path.join(directory, filename)
@@ -367,7 +367,7 @@ while True:
                     print(file.read())
             else:
                 print("Datei nicht gefunden.")
-        elif option == 3:
+        elif option == "3":
             print("Geben Sie den Dateinamen ein:")
             filename = input()
             filepath = os.path.join(directory, filename)
@@ -390,14 +390,14 @@ while True:
         print("Add-Ons Optionen:")
         print("1 = Klassische Add-Ons (vom Server laden / starten)")
         print("2 = App Installer (.pios Dateien installieren)")
-        addon_option = int(input())
+        addon_option = input()
 
-        if addon_option == 1:
+        if addon_option == "1":
             print("1 = Add-On von Server auswaehlen und herunterladen")
             print("2 = Vorhandene Add-Ons anzeigen und laden")
-            sub_option = int(input())
+            sub_option = input()
 
-            if sub_option == 1:
+            if sub_option == "1":
                 server_addons = list_server_addons()
                 py_addons = [a for a in server_addons if a.endswith(".py")]
                 if not py_addons:
@@ -427,7 +427,7 @@ while True:
                 print("Ungueltige Auswahl.")
             input("Druecke enter um fortzufahren")
 
-        elif addon_option == 2:
+        elif addon_option == "2":
             print("App Installer Optionen:")
             print("1 = .pios Datei vom Server herunterladen und installieren")
             print("2 = Lokale .pios Datei installieren")
@@ -611,5 +611,6 @@ while True:
         print("Easter Egg :D")
         input("Druecke enter um fortzufahren")
     else:
-        print("Gebe eíne gueltige Zahl ein!")
+        print("Gebe eine gueltige Zahl ein!")
         input("Druecke enter um fortzufahren")
+
