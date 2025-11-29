@@ -1,6 +1,7 @@
-﻿# Before you edit this code please note I coded this not very well
-# I know I coded shit. I warned you
-# And please dont copy the code. You can make your own PixelOS from this but say at least its based on PixelOS
+# Before you edit this code please note I coded this not very well.
+# I know I coded sh#t. I warned you.
+# And please dont copy the code. You can make your own PixelOS from this but say at least its based on PixelOS.
+# Please Note that some of the code is German.
 
 import os
 import importlib.util
@@ -31,17 +32,17 @@ command_dir = os.path.join(directoryzwei, "Commands")
 pqu_dir = os.path.join(directoryzwei, "PixelOS_Code")
 script_path = os.path.join(pqu_dir, "PixelOS_Custom.py")
 
-ziel_datei = pqu_dir + "\PixelOS_Custom.py"
+ziel_datei = pqu_dir+"\PixelOS_Custom.py"
 
 
 BETA_MODE = False
 OPEN_BETA_MODE = True
-VERSION = "CUSTOM_1"
+VERSION = "CUSTOM_1.1"
 
 if OPEN_BETA_MODE:
-    SERVER_VERSION_URL = "http://peach.fps.ms:11231/version/version_beta.php"
+    SERVER_VERSION_URL = "http://peach.fps.ms:11231/version/version_custom_beta.php"
 elif OPEN_BETA_MODE == False:
-    SERVER_VERSION_URL = "http://peach.fps.ms:11231/version/version_release.php"
+    SERVER_VERSION_URL = "http://peach.fps.ms:11231/version/version_custom_release.php"
 
 def find_pios_key_file():
     for filename in os.listdir(keys_dir):
@@ -306,8 +307,8 @@ while True:
     print("5 = Version")
     print("6 = Mitwirkende")
     print("7 = Beenden")
-    eing_eins = int(input("> "))
-    if eing_eins == 1:
+    eing_eins = input("> ")
+    if eing_eins == "1":
         print("Willkommen beim Taschenrechner. Willst du plus, minus, mal oder geteilt:")
         print("1 = Plus")
         print("2 = Minus")
@@ -336,7 +337,7 @@ while True:
         else:
             print("Bitte geb eine gueltige Zahl ein!!!")
         input("Druecke enter um fortzufahren")
-    elif eing_eins == 2:
+    elif eing_eins == "2":
         print("Texteditor Optionen:")
         print("1 = Neue Datei erstellen")
         print("2 = Datei oeffnen")
@@ -385,7 +386,7 @@ while True:
         else:
             print("Ungueltige Option, bitte versuchen Sie es erneut.")
         input("Druecke enter um fortzufahren")
-    elif eing_eins == 3:
+    elif eing_eins == "3":
         print("Add-Ons Optionen:")
         print("1 = Klassische Add-Ons (vom Server laden / starten)")
         print("2 = App Installer (.pios Dateien installieren)")
@@ -465,7 +466,7 @@ while True:
 
         else:
             print("Ungueltige Option.")
-    elif eing_eins == 4:
+    elif eing_eins == "4":
         print("\033[H\033[J", end="")
         print("-------- PixelOS Terminal --------")
         root = False
@@ -594,19 +595,21 @@ while True:
                 handled = execute_command_file(cmd, args)
                 if not handled:
                     print("Unknown command.")
-    elif eing_eins == 5:
+    elif eing_eins == "5":
         print("PixelOS Version " + VERSION + " BETA")
         print("Release Datum: 15.11.25")
         print("Um PixelOS zu aktualisieren, benutze den Updater (PixelOS_Updater.exe)")
         input("Druecke enter um fortzufahren")
-    elif eing_eins == 6:
+    elif eing_eins == "6":
         print("Owner und Dev: Leonard1412")
         print("Owner: Crafii9")
         input("Druecke enter um fortzufahren")
-    elif eing_eins == 7:
+    elif eing_eins == "7":
         wait = input("Druecke Enter um das Programm zu beenden")
         break
-    elif eing_eins == 99:
+    elif eing_eins == "99":
         print("Easter Egg :D")
         input("Druecke enter um fortzufahren")
-
+    else:
+        print("Gebe eíne gueltige Zahl ein!")
+        input("Druecke enter um fortzufahren")
